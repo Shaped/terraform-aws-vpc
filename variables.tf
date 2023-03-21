@@ -576,6 +576,12 @@ variable "eks_subnet_group_name" {
   default     = null
 }
 
+variable "eks_route_table_tags" {
+  description = "Additional tags for the database route tables"
+  type        = map(string)
+  default     = {}
+}
+
 variable "outpost_subnet_tags" {
   description = "Additional tags for the outpost subnets"
   type        = map(string)
@@ -592,6 +598,12 @@ variable "private_route_table_tags" {
   description = "Additional tags for the private route tables"
   type        = map(string)
   default     = {}
+}
+
+variable "database_subnet_group_name" {
+  description = "Name of EKS subnet group"
+  type        = string
+  default     = null
 }
 
 variable "database_route_table_tags" {
