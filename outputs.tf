@@ -148,16 +148,6 @@ output "eks_subnets_ipv6_cidr_blocks" {
   value       = compact(aws_subnet.eks[*].ipv6_cidr_block)
 }
 
-output "eks_subnet_group" {
-  description = "ID of eks subnet group"
-  value       = try(aws_db_subnet_group.eks[0].id, "")
-}
-
-output "eks_subnet_group_name" {
-  description = "Name of eks subnet group"
-  value       = try(aws_db_subnet_group.eks[0].name, "")
-}
-
 output "database_subnets" {
   description = "List of IDs of database subnets"
   value       = aws_subnet.database[*].id
