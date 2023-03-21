@@ -564,6 +564,18 @@ variable "eks_subnet_tags_per_az" {
   default     = {}
 }
 
+variable "eks_subnet_group_tags" {
+  description = "Additional tags for the EKS subnet group"
+  type        = map(string)
+  default     = {}
+}
+
+variable "eks_subnet_group_name" {
+  description = "Name of EKS subnet group"
+  type        = string
+  default     = null
+}
+
 variable "outpost_subnet_tags" {
   description = "Additional tags for the outpost subnets"
   type        = map(string)
@@ -604,30 +616,6 @@ variable "intra_route_table_tags" {
   description = "Additional tags for the intra route tables"
   type        = map(string)
   default     = {}
-}
-
-variable "eks_subnet_group_name" {
-  description = "Name of EKS subnet group"
-  type        = string
-  default     = null
-}
-
-variable "eks_subnet_tags" {
-  description = "Additional tags for the EKS subnets"
-  type        = map(string)
-  default     = {}
-}
-
-variable "eks_subnet_group_tags" {
-  description = "Additional tags for the EKS subnet group"
-  type        = map(string)
-  default     = {}
-}
-
-variable "eks_subnet_group_name" {
-  description = "Name of EKS subnet group"
-  type        = string
-  default     = null
 }
 
 variable "database_subnet_tags" {
