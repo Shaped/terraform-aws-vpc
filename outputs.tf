@@ -128,6 +128,36 @@ output "outpost_subnets_ipv6_cidr_blocks" {
   value       = compact(aws_subnet.outpost[*].ipv6_cidr_block)
 }
 
+output "eks_subnets" {
+  description = "List of IDs of eks subnets"
+  value       = aws_subnet.eks[*].id
+}
+
+output "eks_subnet_arns" {
+  description = "List of ARNs of eks subnets"
+  value       = aws_subnet.eks[*].arn
+}
+
+output "eks_subnets_cidr_blocks" {
+  description = "List of cidr_blocks of eks subnets"
+  value       = compact(aws_subnet.eks[*].cidr_block)
+}
+
+output "eks_subnets_ipv6_cidr_blocks" {
+  description = "List of IPv6 cidr_blocks of eks subnets in an IPv6 enabled VPC"
+  value       = compact(aws_subnet.eks[*].ipv6_cidr_block)
+}
+
+output "eks_subnet_group" {
+  description = "ID of eks subnet group"
+  value       = try(aws_db_subnet_group.eks[0].id, "")
+}
+
+output "eks_subnet_group_name" {
+  description = "Name of eks subnet group"
+  value       = try(aws_db_subnet_group.eks[0].name, "")
+}
+
 output "database_subnets" {
   description = "List of IDs of database subnets"
   value       = aws_subnet.database[*].id
@@ -243,6 +273,11 @@ output "private_route_table_ids" {
   value       = aws_route_table.private[*].id
 }
 
+output "eks_route_table_ids" {
+  description = "List of IDs of eks route tables"
+  value       = try(coalescelist(aws_route_table.eks[*].id, aws_route_table.private[*].id), [])
+}
+
 output "database_route_table_ids" {
   description = "List of IDs of database route tables"
   value       = try(coalescelist(aws_route_table.database[*].id, aws_route_table.private[*].id), [])
@@ -271,6 +306,21 @@ output "public_internet_gateway_route_id" {
 output "public_internet_gateway_ipv6_route_id" {
   description = "ID of the IPv6 internet gateway route"
   value       = try(aws_route.public_internet_gateway_ipv6[0].id, "")
+}
+
+output "eks_internet_gateway_route_id" {
+  description = "ID of the eks internet gateway route"
+  value       = try(aws_route.eks_internet_gateway[0].id, "")
+}
+
+output "eks_nat_gateway_route_ids" {
+  description = "List of IDs of the eks nat gateway route"
+  value       = aws_route.eks_nat_gateway[*].id
+}
+
+output "eks_ipv6_egress_route_id" {
+  description = "ID of the eks IPv6 egress route"
+  value       = try(aws_route.eks_ipv6_egress[0].id, "")
 }
 
 output "database_internet_gateway_route_id" {
@@ -481,6 +531,16 @@ output "intra_network_acl_id" {
 output "intra_network_acl_arn" {
   description = "ARN of the intra network ACL"
   value       = try(aws_network_acl.intra[0].arn, "")
+}
+
+output "eks_network_acl_id" {
+  description = "ID of the eks network ACL"
+  value       = try(aws_network_acl.eks[0].id, "")
+}
+
+output "eks_network_acl_arn" {
+  description = "ARN of the eks network ACL"
+  value       = try(aws_network_acl.eks[0].arn, "")
 }
 
 output "database_network_acl_id" {
