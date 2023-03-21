@@ -334,14 +334,20 @@ variable "create_redshift_subnet_group" {
   default     = true
 }
 
-variable "create_database_internet_gateway_route" {
-  description = "Controls if an internet gateway route for public database access should be created"
+variable "create_eks_internet_gateway_route" {
+  description = "Controls if an internet gateway route for EKS should be created"
   type        = bool
   default     = false
 }
 
-variable "create_eks_internet_gateway_route" {
-  description = "Controls if an internet gateway route for EKS should be created"
+variable "create_eks_nat_gateway_route" {
+  description = "Controls if a nat gateway route should be created to give internet access to the EKS subnets"
+  type        = bool
+  default     = false
+}
+
+variable "create_database_internet_gateway_route" {
+  description = "Controls if an internet gateway route for public database access should be created"
   type        = bool
   default     = false
 }
