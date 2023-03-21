@@ -89,6 +89,7 @@ By default, the module will determine the number of NAT Gateways to create based
 
 ```hcl
 database_subnets    = ["10.0.21.0/24", "10.0.22.0/24"]
+eks_subnets         = ["10.0.61.0/24", "10.0.62.0/24"]
 elasticache_subnets = ["10.0.31.0/24", "10.0.32.0/24"]
 private_subnets     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
 redshift_subnets    = ["10.0.41.0/24", "10.0.42.0/24"]
@@ -148,14 +149,25 @@ module "vpc" {
 }
 ```
 
-## Public access to RDS instances
+## Public access to RDS instances or EKS nodes or pods
 
-Sometimes it is handy to have public access to RDS instances (it is not recommended for production) by specifying these arguments:
+Sometimes it is handy to have public access to RDS instances or EKS nodes/pods (it is not recommended for production) by specifying these arguments:
 
+RDS:
 ```hcl
   create_database_subnet_group           = true
   create_database_subnet_route_table     = true
   create_database_internet_gateway_route = true
+
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+```
+
+EKS:
+```hcl
+  create_eks_subnet_group           = true
+  create_eks_subnet_route_table     = true
+  create_eks_internet_gateway_route = true
 
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -286,6 +298,7 @@ No modules.
 | [aws_iam_role_policy_attachment.vpc_flow_log_cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_internet_gateway.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
 | [aws_nat_gateway.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
+| [aws_network_acl.eks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.elasticache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.intra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
@@ -293,6 +306,8 @@ No modules.
 | [aws_network_acl.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
 | [aws_network_acl.redshift](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
+| [aws_network_acl_rule.eks_inbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
+| [aws_network_acl_rule.eks_outbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.database_inbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.database_outbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.elasticache_inbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
@@ -311,16 +326,21 @@ No modules.
 | [aws_route.database_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.database_ipv6_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.database_nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.eks_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.eks_ipv6_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.eks_nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.private_ipv6_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.private_nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public_internet_gateway_ipv6](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route_table.eks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.elasticache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.intra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.redshift](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
+| [aws_route_table_association.eks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
 | [aws_route_table_association.database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
 | [aws_route_table_association.elasticache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
 | [aws_route_table_association.intra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
@@ -329,6 +349,7 @@ No modules.
 | [aws_route_table_association.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
 | [aws_route_table_association.redshift](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
 | [aws_route_table_association.redshift_public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
+| [aws_subnet.eks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.elasticache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.intra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
@@ -356,6 +377,10 @@ No modules.
 | <a name="input_assign_ipv6_address_on_creation"></a> [assign\_ipv6\_address\_on\_creation](#input\_assign\_ipv6\_address\_on\_creation) | Assign IPv6 address on subnet, must be disabled to change IPv6 CIDRs. This is the IPv6 equivalent of map\_public\_ip\_on\_launch | `bool` | `false` | no |
 | <a name="input_azs"></a> [azs](#input\_azs) | A list of availability zones names or ids in the region | `list(string)` | `[]` | no |
 | <a name="input_cidr"></a> [cidr](#input\_cidr) | (Optional) The IPv4 CIDR block for the VPC. CIDR can be explicitly set or it can be derived from IPAM using `ipv4_netmask_length` & `ipv4_ipam_pool_id` | `string` | `"0.0.0.0/0"` | no |
+| <a name="input_create_eks_internet_gateway_route"></a> [create\_eks\_internet\_gateway\_route](#input\_create\_eks\_internet\_gateway\_route) | Controls if an internet gateway route for public EKS access should be created | `bool` | `false` | no |
+| <a name="input_create_eks_nat_gateway_route"></a> [create\_eks\_nat\_gateway\_route](#input\_create\_eks\_nat\_gateway\_route) | Controls if a nat gateway route should be created to give internet access to the EKS subnets | `bool` | `false` | no |
+| <a name="input_create_eks_subnet_group"></a> [create\_eks\_subnet\_group](#input\_create\_eks\_subnet\_group) | Controls if EKS subnet group should be created (n.b. eks\_subnets must also be set) | `bool` | `true` | no |
+| <a name="input_create_eks_subnet_route_table"></a> [create\_eks\_subnet\_route\_table](#input\_create\_eks\_subnet\_route\_table) | Controls if separate route table for EKS should be created | `bool` | `false` | no |
 | <a name="input_create_database_internet_gateway_route"></a> [create\_database\_internet\_gateway\_route](#input\_create\_database\_internet\_gateway\_route) | Controls if an internet gateway route for public database access should be created | `bool` | `false` | no |
 | <a name="input_create_database_nat_gateway_route"></a> [create\_database\_nat\_gateway\_route](#input\_create\_database\_nat\_gateway\_route) | Controls if a nat gateway route should be created to give internet access to the database subnets | `bool` | `false` | no |
 | <a name="input_create_database_subnet_group"></a> [create\_database\_subnet\_group](#input\_create\_database\_subnet\_group) | Controls if database subnet group should be created (n.b. database\_subnets must also be set) | `bool` | `true` | no |
@@ -371,6 +396,19 @@ No modules.
 | <a name="input_create_vpc"></a> [create\_vpc](#input\_create\_vpc) | Controls if VPC should be created (it affects almost all resources) | `bool` | `true` | no |
 | <a name="input_customer_gateway_tags"></a> [customer\_gateway\_tags](#input\_customer\_gateway\_tags) | Additional tags for the Customer Gateway | `map(string)` | `{}` | no |
 | <a name="input_customer_gateways"></a> [customer\_gateways](#input\_customer\_gateways) | Maps of Customer Gateway's attributes (BGP ASN and Gateway's Internet-routable external IP address) | `map(map(any))` | `{}` | no |
+| <a name="input_eks_acl_tags"></a> [eks\_acl\_tags](#input\_eks\_acl\_tags) | Additional tags for the EKS subnets network ACL | `map(string)` | `{}` | no |
+| <a name="input_eks_dedicated_network_acl"></a> [eks\_dedicated\_network\_acl](#input\_eks\_dedicated\_network\_acl) | Whether to use dedicated network ACL (not default) and custom rules for EKS subnets | `bool` | `false` | no |
+| <a name="input_eks_inbound_acl_rules"></a> [eks\_inbound\_acl\_rules](#input\_eks\_inbound\_acl\_rules) | EKS subnets inbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |
+| <a name="input_eks_outbound_acl_rules"></a> [eks\_outbound\_acl\_rules](#input\_eks\_outbound\_acl\_rules) | EKS subnets outbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |
+| <a name="input_eks_route_table_tags"></a> [eks\_route\_table\_tags](#input\_eks\_route\_table\_tags) | Additional tags for the EKS route tables | `map(string)` | `{}` | no |
+| <a name="input_eks_subnet_assign_ipv6_address_on_creation"></a> [eks\_subnet\_assign\_ipv6\_address\_on\_creation](#input\_eks\_subnet\_assign\_ipv6\_address\_on\_creation) | Assign IPv6 address on EKS subnet, must be disabled to change IPv6 CIDRs. This is the IPv6 equivalent of map\_public\_ip\_on\_launch | `bool` | `null` | no |
+| <a name="input_eks_subnet_group_name"></a> [eks\_subnet\_group\_name](#input\_eks\_subnet\_group\_name) | Name of EKS subnet group | `string` | `null` | no |
+| <a name="input_eks_subnet_group_tags"></a> [eks\_subnet\_group\_tags](#input\_eks\_subnet\_group\_tags) | Additional tags for the EKS subnet group | `map(string)` | `{}` | no |
+| <a name="input_eks_subnet_ipv6_prefixes"></a> [eks\_subnet\_ipv6\_prefixes](#input\_eks\_subnet\_ipv6\_prefixes) | Assigns IPv6 EKS subnet id based on the Amazon provided /56 prefix base 10 integer (0-256). Must be of equal length to the corresponding IPv4 subnet list | `list(string)` | `[]` | no |
+| <a name="input_eks_subnet_names"></a> [eks\_subnet\_names](#input\_eks\_subnet\_names) | Explicit values to use in the Name tag on EKS subnets. If empty, Name tags are generated. | `list(string)` | `[]` | no |
+| <a name="input_eks_subnet_suffix"></a> [eks\_subnet\_suffix](#input\_eks\_subnet\_suffix) | Suffix to append to EKS subnets name | `string` | `"db"` | no |
+| <a name="input_eks_subnet_tags"></a> [eks\_subnet\_tags](#input\_eks\_subnet\_tags) | Additional tags for the EKS subnets | `map(string)` | `{}` | no |
+| <a name="input_eks_subnets"></a> [eks\_subnets](#input\_eks\_subnets) | A list of EKS subnets | `list(string)` | `[]` | no |
 | <a name="input_database_acl_tags"></a> [database\_acl\_tags](#input\_database\_acl\_tags) | Additional tags for the database subnets network ACL | `map(string)` | `{}` | no |
 | <a name="input_database_dedicated_network_acl"></a> [database\_dedicated\_network\_acl](#input\_database\_dedicated\_network\_acl) | Whether to use dedicated network ACL (not default) and custom rules for database subnets | `bool` | `false` | no |
 | <a name="input_database_inbound_acl_rules"></a> [database\_inbound\_acl\_rules](#input\_database\_inbound\_acl\_rules) | Database subnets inbound network ACL rules | `list(map(string))` | <pre>[<br>  {<br>    "cidr_block": "0.0.0.0/0",<br>    "from_port": 0,<br>    "protocol": "-1",<br>    "rule_action": "allow",<br>    "rule_number": 100,<br>    "to_port": 0<br>  }<br>]</pre> | no |
@@ -545,6 +583,19 @@ No modules.
 | <a name="output_azs"></a> [azs](#output\_azs) | A list of availability zones specified as argument to this module |
 | <a name="output_cgw_arns"></a> [cgw\_arns](#output\_cgw\_arns) | List of ARNs of Customer Gateway |
 | <a name="output_cgw_ids"></a> [cgw\_ids](#output\_cgw\_ids) | List of IDs of Customer Gateway |
+| <a name="output_eks_internet_gateway_route_id"></a> [eks\_internet\_gateway\_route\_id](#output\_eks\_internet\_gateway\_route\_id) | ID of the EKS internet gateway route |
+| <a name="output_eks_ipv6_egress_route_id"></a> [eks\_ipv6\_egress\_route\_id](#output\_eks\_ipv6\_egress\_route\_id) | ID of the EKS IPv6 egress route |
+| <a name="output_eks_nat_gateway_route_ids"></a> [eks\_nat\_gateway\_route\_ids](#output\_eks\_nat\_gateway\_route\_ids) | List of IDs of the EKS nat gateway route |
+| <a name="output_eks_network_acl_arn"></a> [eks\_network\_acl\_arn](#output\_eks\_network\_acl\_arn) | ARN of the EKS network ACL |
+| <a name="output_eks_network_acl_id"></a> [eks\_network\_acl\_id](#output\_eks\_network\_acl\_id) | ID of the EKS network ACL |
+| <a name="output_eks_route_table_association_ids"></a> [eks\_route\_table\_association\_ids](#output\_eks\_route\_table\_association\_ids) | List of IDs of the EKS route table association |
+| <a name="output_eks_route_table_ids"></a> [eks\_route\_table\_ids](#output\_eks\_route\_table\_ids) | List of IDs of EKS route tables |
+| <a name="output_eks_subnet_arns"></a> [eks\_subnet\_arns](#output\_eks\_subnet\_arns) | List of ARNs of EKS subnets |
+| <a name="output_eks_subnet_group"></a> [eks\_subnet\_group](#output\_eks\_subnet\_group) | ID of EKS subnet group |
+| <a name="output_eks_subnet_group_name"></a> [eks\_subnet\_group\_name](#output\_eks\_subnet\_group\_name) | Name of EKS subnet group |
+| <a name="output_eks_subnets"></a> [eks\_subnets](#output\_eks\_subnets) | List of IDs of EKS subnets |
+| <a name="output_eks_subnets_cidr_blocks"></a> [eks\_subnets\_cidr\_blocks](#output\_eks\_subnets\_cidr\_blocks) | List of cidr\_blocks of EKS subnets |
+| <a name="output_eks_subnets_ipv6_cidr_blocks"></a> [eks\_subnets\_ipv6\_cidr\_blocks](#output\_eks\_subnets\_ipv6\_cidr\_blocks) | List of IPv6 cidr\_blocks of EKS subnets in an IPv6 enabled VPC |
 | <a name="output_database_internet_gateway_route_id"></a> [database\_internet\_gateway\_route\_id](#output\_database\_internet\_gateway\_route\_id) | ID of the database internet gateway route |
 | <a name="output_database_ipv6_egress_route_id"></a> [database\_ipv6\_egress\_route\_id](#output\_database\_ipv6\_egress\_route\_id) | ID of the database IPv6 egress route |
 | <a name="output_database_nat_gateway_route_ids"></a> [database\_nat\_gateway\_route\_ids](#output\_database\_nat\_gateway\_route\_ids) | List of IDs of the database nat gateway route |
