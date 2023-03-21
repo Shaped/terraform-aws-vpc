@@ -591,8 +591,6 @@ No modules.
 | <a name="output_eks_route_table_association_ids"></a> [eks\_route\_table\_association\_ids](#output\_eks\_route\_table\_association\_ids) | List of IDs of the EKS route table association |
 | <a name="output_eks_route_table_ids"></a> [eks\_route\_table\_ids](#output\_eks\_route\_table\_ids) | List of IDs of EKS route tables |
 | <a name="output_eks_subnet_arns"></a> [eks\_subnet\_arns](#output\_eks\_subnet\_arns) | List of ARNs of EKS subnets |
-| <a name="output_eks_subnet_group"></a> [eks\_subnet\_group](#output\_eks\_subnet\_group) | ID of EKS subnet group |
-| <a name="output_eks_subnet_group_name"></a> [eks\_subnet\_group\_name](#output\_eks\_subnet\_group\_name) | Name of EKS subnet group |
 | <a name="output_eks_subnets"></a> [eks\_subnets](#output\_eks\_subnets) | List of IDs of EKS subnets |
 | <a name="output_eks_subnets_cidr_blocks"></a> [eks\_subnets\_cidr\_blocks](#output\_eks\_subnets\_cidr\_blocks) | List of cidr\_blocks of EKS subnets |
 | <a name="output_eks_subnets_ipv6_cidr_blocks"></a> [eks\_subnets\_ipv6\_cidr\_blocks](#output\_eks\_subnets\_ipv6\_cidr\_blocks) | List of IPv6 cidr\_blocks of EKS subnets in an IPv6 enabled VPC |
